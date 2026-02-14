@@ -10,22 +10,32 @@ interface FacilitiesProps {
 const Facilities: React.FC<FacilitiesProps> = ({ facilities, loading }) => {
   const [searchLocation, setSearchLocation] = useState('');
   const [filteredFacilities, setFilteredFacilities] = useState<Facility[]>(facilities);
+  const [isLocating, setIsLocating] = useState(false);
 
   useEffect(() => {
     setFilteredFacilities(facilities);
   }, [facilities]);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!searchLocation.trim()) return;
+  const handleSearch = async (e?: React.FormEvent, coords?: { latitude: number; longitude: number }) => {
+    if (e) e.preventDefault();
+
+    // Allow search if we have location text OR coordinates
+    if (!searchLocation.trim() && !coords) return;
 
     try {
+      const payload: any = { location: searchLocation };
+      if (coords) {
+        payload.coordinates = coords;
+        // Also update text to show we used coordinates (optional UX choice)
+        // setSearchLocation(`Current Location`);
+      }
+
       const response = await fetch('http://localhost:8000/facilities', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ location: searchLocation }),
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
@@ -34,6 +44,29 @@ const Facilities: React.FC<FacilitiesProps> = ({ facilities, loading }) => {
       }
     } catch (error) {
       console.error('Error searching facilities:', error);
+    }
+  };
+
+  const handleLocation = () => {
+    setIsLocating(true);
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setSearchLocation(`Current Location (${latitude.toFixed(4)}, ${longitude.toFixed(4)})`);
+          setIsLocating(false);
+          // Auto-trigger search with coordinates
+          handleSearch(undefined, { latitude, longitude });
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          alert("Could not detect location. Please enter manually.");
+          setIsLocating(false);
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by your browser");
+      setIsLocating(false);
     }
   };
 
@@ -82,15 +115,28 @@ const Facilities: React.FC<FacilitiesProps> = ({ facilities, loading }) => {
         </div>
 
         {/* Search Form */}
-        <form onSubmit={handleSearch} className="flex gap-4">
-          <div className="flex-1">
+        <form onSubmit={(e) => handleSearch(e)} className="flex gap-4">
+          <div className="flex-1 relative">
             <input
               type="text"
               value={searchLocation}
               onChange={(e) => setSearchLocation(e.target.value)}
               placeholder="Enter city, state (e.g., Mumbai, Maharashtra)"
-              className="input-field"
+              className="input-field pr-12"
             />
+            <button
+              type="button"
+              onClick={handleLocation}
+              disabled={isLocating}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-gray-400 hover:text-primary-600 rounded-full hover:bg-gray-100 transition-colors"
+              title="Use current location"
+            >
+              {isLocating ? (
+                <div className="animate-spin h-5 w-5 border-2 border-primary-600 border-t-transparent rounded-full" />
+              ) : (
+                <MapPinIcon className="w-5 h-5" />
+              )}
+            </button>
           </div>
           <button type="submit" className="btn-primary">
             Search

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import Dashboard from './components/Dashboard';
 import TriageForm from './components/TriageForm';
 import VoiceInput from './components/VoiceInput';
 import Facilities from './components/Facilities';
 import Results from './components/Results';
 import Disclaimer from './components/Disclaimer';
+import LandingPage from './components/LandingPage';
 import type { TriageResult, Facility } from './types';
 
 const API_BASE_URL = 'http://localhost:8000';
@@ -17,7 +17,11 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleTriageSubmit = async (symptoms: string, location?: string) => {
+  const handleTriageSubmit = async (
+    symptoms: string,
+    location?: string,
+    coordinates?: { latitude: number; longitude: number }
+  ) => {
     setLoading(true);
     setError(null);
 
@@ -30,6 +34,7 @@ function App() {
         body: JSON.stringify({
           symptoms,
           location: location || undefined,
+          coordinates: coordinates || undefined,
         }),
       });
 
@@ -40,14 +45,17 @@ function App() {
       const result = await response.json();
       setTriageResult(result);
 
-      // If location is provided, also fetch facilities
-      if (location) {
+      // If location or coordinates are provided, also fetch facilities
+      if (location || coordinates) {
         const facilitiesResponse = await fetch(`${API_BASE_URL}/facilities`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ location }),
+          body: JSON.stringify({
+            location: location || "Current Location",
+            coordinates: coordinates || undefined
+          }),
         });
 
         if (facilitiesResponse.ok) {
@@ -92,50 +100,50 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50 pb-16"> {/* Added padding bottom to prevent footer overlap */}
+      <div className="min-h-screen bg-gray-50 pb-16">
         <Disclaimer />
         <Header />
 
-        <main className="container mx-auto px-4 py-8">
-          <Routes>
-            <Route path="/" element={
-              <Dashboard
-                onTriageSubmit={handleTriageSubmit}
-                onVoiceSubmit={handleVoiceSubmit}
-                loading={loading}
-                error={error}
-              />
-            } />
-            <Route path="/triage" element={
-              <TriageForm
-                onSubmit={handleTriageSubmit}
-                loading={loading}
-                error={error}
-              />
-            } />
-            <Route path="/voice" element={
-              <VoiceInput
-                onSubmit={handleVoiceSubmit}
-                loading={loading}
-                error={error}
-              />
-            } />
-            <Route path="/facilities" element={
-              <Facilities
-                facilities={facilities}
-                loading={loading}
-              />
-            } />
-            <Route path="/results" element={
-              <Results
-                triageResult={triageResult}
-                facilities={facilities}
-                loading={loading}
-                error={error}
-              />
-            } />
-          </Routes>
-        </main>
+        <Routes>
+          {/* Landing Page - Full Width */}
+          <Route path="/" element={<LandingPage />} />
+
+          {/* App Routes - Contained */}
+          <Route path="/*" element={
+            <main className="container mx-auto px-4 py-8">
+              <Routes>
+                <Route path="/app" element={
+                  <TriageForm
+                    onSubmit={handleTriageSubmit}
+                    loading={loading}
+                    error={error}
+                  />
+                } />
+                <Route path="/voice" element={
+                  <VoiceInput
+                    onSubmit={handleVoiceSubmit}
+                    loading={loading}
+                    error={error}
+                  />
+                } />
+                <Route path="/facilities" element={
+                  <Facilities
+                    facilities={facilities}
+                    loading={loading}
+                  />
+                } />
+                <Route path="/results" element={
+                  <Results
+                    triageResult={triageResult}
+                    facilities={facilities}
+                    loading={loading}
+                    error={error}
+                  />
+                } />
+              </Routes>
+            </main>
+          } />
+        </Routes>
       </div>
     </Router>
   );

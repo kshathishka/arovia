@@ -18,6 +18,7 @@ soundfile>=0.12.1     # For audio file handling
 pyaudio>=0.2.11       # Alternative audio backend
 
 # Geolocation
+googlemaps>=4.10.0
 geopy>=2.4.0
 folium>=0.15.0        # Interactive maps
 

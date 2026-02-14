@@ -2,9 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ExclamationTriangleIcon,
-  MapPinIcon
+  MapPinIcon,
+  ArrowDownTrayIcon
 } from '@heroicons/react/24/outline';
 import type { TriageResult, Facility } from '../types';
+import { downloadReferralNote } from '../utils/download';
 
 interface ResultsProps {
   triageResult: TriageResult | null;
@@ -88,12 +90,22 @@ const Results: React.FC<ResultsProps> = ({ triageResult, facilities, loading, er
             <h1 className="text-2xl font-bold text-gray-900">Triage Results</h1>
             <p className="text-gray-600">AI-powered medical assessment</p>
           </div>
-          <button
-            onClick={() => navigate('/')}
-            className="btn-secondary"
-          >
-            New Assessment
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => downloadReferralNote(triageResult, facilities)}
+              className="btn-secondary flex items-center gap-2"
+              disabled={loading}
+            >
+              <ArrowDownTrayIcon className="w-5 h-5" />
+              Download Note
+            </button>
+            <button
+              onClick={() => navigate('/')}
+              className="btn-primary"
+            >
+              New Assessment
+            </button>
+          </div>
         </div>
 
         {/* Urgency Score */}
@@ -162,8 +174,8 @@ const Results: React.FC<ResultsProps> = ({ triageResult, facilities, loading, er
                     <p className="text-yellow-800 text-sm mt-1">Specialty: {risk.specialty_needed}</p>
                   </div>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${risk.probability === 'high' ? 'bg-red-100 text-red-800' :
-                      risk.probability === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-green-100 text-green-800'
+                    risk.probability === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-green-100 text-green-800'
                     }`}>
                     {risk.probability} probability
                   </span>

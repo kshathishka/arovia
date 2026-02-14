@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { DocumentTextIcon, MapPinIcon } from '@heroicons/react/24/outline';
 
 interface TriageFormProps {
-  onSubmit: (symptoms: string, location?: string) => void;
+  onSubmit: (symptoms: string, location?: string, coordinates?: { latitude: number; longitude: number }) => void;
   loading: boolean;
   error: string | null;
 }
@@ -12,11 +12,35 @@ const TriageForm: React.FC<TriageFormProps> = ({ onSubmit, loading, error }) => 
   const navigate = useNavigate();
   const [symptoms, setSymptoms] = useState('');
   const [location, setLocation] = useState('');
+  const [coordinates, setCoordinates] = useState<{ latitude: number; longitude: number } | undefined>(undefined);
+  const [isLocating, setIsLocating] = useState(false);
+
+  const handleLocation = () => {
+    setIsLocating(true);
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setCoordinates({ latitude, longitude });
+          setLocation(`Lat: ${latitude.toFixed(4)}, Lon: ${longitude.toFixed(4)}`);
+          setIsLocating(false);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          alert("Could not detect location. Please enter manually.");
+          setIsLocating(false);
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by your browser");
+      setIsLocating(false);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (symptoms.trim()) {
-      onSubmit(symptoms.trim(), location.trim() || undefined);
+      onSubmit(symptoms.trim(), location.trim() || undefined, coordinates);
       navigate('/results');
     }
   };
@@ -30,115 +54,116 @@ const TriageForm: React.FC<TriageFormProps> = ({ onSubmit, loading, error }) => 
   ];
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="card">
-        <div className="flex items-center mb-6">
-          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+    <div className="max-w-3xl mx-auto">
+      <div className="card shadow-lg">
+        <div className="flex items-center mb-8 border-b border-gray-100 pb-6">
+          <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mr-5">
             <DocumentTextIcon className="w-6 h-6 text-blue-600" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Text-Based Triage</h1>
-            <p className="text-gray-600">Describe your symptoms in detail</p>
+            <h1 className="text-2xl font-bold text-gray-900">Symptom Assessment</h1>
+            <p className="text-gray-500 mt-1">Describe your symptoms in detail for AI analysis</p>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-8">
           <div>
-            <label htmlFor="symptoms" className="block text-sm font-medium text-gray-700 mb-2">
-              Symptoms Description *
+            <label htmlFor="symptoms" className="block text-sm font-semibold text-gray-700 mb-2">
+              Describe your symptoms <span className="text-red-500">*</span>
             </label>
             <textarea
               id="symptoms"
               value={symptoms}
               onChange={(e) => setSymptoms(e.target.value)}
-              placeholder="Please describe your symptoms in detail. Include information about:
-• What symptoms you're experiencing
-• When they started
-• How severe they are
-• Any associated symptoms
-• Any triggers or patterns"
-              className="input-field h-40 resize-none"
+              placeholder="Example: I have a severe headache on the left side, sensitivity to light, and nausea for the past 4 hours..."
+              className="input-field h-40 resize-none text-base leading-relaxed bg-gray-50/50"
               required
             />
-            <p className="mt-2 text-sm text-gray-500">
-              Be as specific as possible for better analysis
+            <p className="mt-2 text-xs text-gray-400">
+              Be as specific as possible about the pain, duration, and any triggers.
             </p>
           </div>
 
           <div>
-            <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="location" className="block text-sm font-semibold text-gray-700 mb-2">
               Your Location (Optional)
             </label>
-            <div className="relative">
-              <MapPinIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <div className="relative flex items-center">
+              <div className="absolute left-3 text-gray-400">
+                <MapPinIcon className="w-5 h-5" />
+              </div>
               <input
                 type="text"
                 id="location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                placeholder="City, State (e.g., Mumbai, Maharashtra)"
-                className="input-field pl-10"
+                placeholder="City, State OR Click to Detect"
+                className="input-field pl-10 pr-12 bg-gray-50/50"
               />
+              <button
+                type="button"
+                onClick={handleLocation}
+                disabled={isLocating}
+                className="absolute right-2 p-2 text-gray-400 hover:text-blue-600 transition-colors rounded-lg hover:bg-blue-50"
+                title="Detect my location"
+              >
+                {isLocating ? (
+                  <div className="animate-spin h-5 w-5 border-2 border-gray-300 border-t-blue-600 rounded-full" />
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                    <path fillRule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+                  </svg>
+                )}
+              </button>
             </div>
-            <p className="mt-2 text-sm text-gray-500">
-              Adding your location helps us find nearby healthcare facilities
-            </p>
           </div>
 
           {/* Example Symptoms */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Example Symptom Descriptions
+            <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+              Quick Select Examples
             </label>
-            <div className="space-y-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {exampleSymptoms.map((example, index) => (
                 <button
                   key={index}
                   type="button"
                   onClick={() => setSymptoms(example)}
-                  className="w-full text-left p-3 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 text-sm text-gray-700 transition-colors duration-200"
+                  className="text-left px-4 py-3 bg-white hover:bg-blue-50 border border-gray-200 hover:border-blue-200 rounded-xl text-sm text-gray-600 hover:text-blue-700 transition-all duration-200 shadow-sm"
                 >
-                  "{example}"
+                  {example}
                 </button>
               ))}
             </div>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-red-800">{error}</p>
-                </div>
-              </div>
+            <div className="bg-red-50 border border-red-100 rounded-xl p-4 flex items-center space-x-3 text-red-700">
+              <span className="text-xl">⚠️</span>
+              <p className="text-sm font-medium">{error}</p>
             </div>
           )}
 
-          <div className="flex space-x-4">
+          <div className="flex gap-4 pt-4 border-t border-gray-100">
             <button
               type="button"
               onClick={() => navigate('/')}
-              className="btn-secondary flex-1"
+              className="px-6 py-3 border border-gray-200 text-gray-600 font-medium rounded-xl hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors"
             >
-              Back to Dashboard
+              Cancel
             </button>
             <button
               type="submit"
               disabled={loading || !symptoms.trim()}
-              className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-primary flex-1 py-3 text-lg font-medium shadow-lg shadow-blue-500/20"
             >
               {loading ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Analyzing...
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-white/30 border-t-white"></div>
+                  <span>Analyzing...</span>
                 </div>
               ) : (
-                'Analyze Symptoms'
+                'Start Triage Analysis'
               )}
             </button>
           </div>

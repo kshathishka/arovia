@@ -3,6 +3,7 @@ Whisper-Large integration for speech-to-text with 22 Indic languages support
 """
 try:
     import whisper
+    import torch
     WHISPER_AVAILABLE = True
 except ImportError as e:
     print(f"Warning: Whisper not available: {e}")
@@ -47,7 +48,7 @@ class WhisperClient:
         "santali": "sat"
     }
     #def __init__(self, model_size: str = "small"):
-    def __init__(self, model_size: str = "large-v3"):
+    def __init__(self, model_size: str = "medium"):
         """
         Initialize Whisper client
         
@@ -56,6 +57,9 @@ class WhisperClient:
         """
         self.model_size = model_size
         self.model = None
+        # User requested CPU only due to MPS NaN errors
+        self.device = "cpu" 
+        # self.device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
         self._load_model()
     
     def _load_model(self):
@@ -66,9 +70,9 @@ class WhisperClient:
             return
             
         try:
-            print(f"Loading Whisper {self.model_size} model...")
-            self.model = whisper.load_model(self.model_size)
-            print("Whisper model loaded successfully!")
+            print(f"Loading Whisper {self.model_size} model on {self.device.upper()}...")
+            self.model = whisper.load_model(self.model_size, device=self.device)
+            print(f"Whisper model loaded successfully on {self.device.upper()}!")
         except Exception as e:
             print(f"Error loading Whisper model: {e}")
             self.model = None
@@ -154,7 +158,8 @@ class WhisperClient:
                 audio_file_path,
                 language=language,
                 initial_prompt=initial_prompt,
-                word_timestamps=True
+                word_timestamps=True,
+                fp16=(self.device != "cpu")
             )
             
             processing_time = time.time() - start_time
@@ -208,7 +213,7 @@ def transcribe_voice_input(
     language: Optional[str] = None,
     duration: float = 10.0,
     #model_size: str = "small",
-    model_size: str = "large-v3"
+    model_size: str = "medium"
 ) -> VoiceInput:
     """
     Quick function to record and transcribe voice input

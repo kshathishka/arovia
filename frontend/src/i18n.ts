@@ -92,6 +92,7 @@ const buildResources = () => {
             translation: {
                 "title": "Arovia Health",
                 "nav": { "dashboard": "Dashboard", "triage": "Triage", "voice": "Voice Input", "facilities": "Facilities", "results": "Results" },
+                ...commonFeatures,
                 "dashboard": {
                     "welcome": "Welcome to Arovia Health",
                     "description": "Smart toggling between languages and streamlined healthcare management.",
@@ -105,6 +106,7 @@ const buildResources = () => {
             translation: {
                 "title": "Salud Arovia",
                 "nav": { "dashboard": "Tablero", "triage": "Triaje", "voice": "Entrada de voz", "facilities": "Instalaciones", "results": "Resultados" },
+                ...commonFeatures,
                 "dashboard": {
                     "welcome": "Bienvenido a Salud Arovia",
                     "description": "Cambio inteligente entre idiomas.",
@@ -117,7 +119,8 @@ const buildResources = () => {
         hi: {
             translation: {
                 "title": "एरोविया हेल्थ",
-                "nav": { "dashboard": "डैशबोर्ड", "triage": "ट्राइएज", "voice": "वॉयस इनपुट", "facilities": "सुविधाएं", "results": "परिणाम" },
+                "nav": { "dashboard": "डैशबोर्ड", "triage": "ट्राइएज", "voice": "वॉयस इनपुट", "facilities": "সুविधाएं", "results": "परिणाम" },
+                ...commonFeatures,
                 "dashboard": {
                     "welcome": "एरोविया हेल्थ में आपका स्वागत है",
                     "description": "भाषाओं के बीच स्मार्ट टॉगलिंग।",
@@ -135,6 +138,7 @@ const buildResources = () => {
             translation: {
                 title: trans.title,
                 nav: trans.nav,
+                ...commonFeatures,
                 dashboard: {
                     ...trans.dashboard,
                     ...commonFeatures

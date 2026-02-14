@@ -80,7 +80,7 @@ async def startup_event():
         print("✅ Triage agent initialized")
         
         # Initialize whisper client
-        whisper_client = WhisperClient(model_size="large-v3")
+        whisper_client = WhisperClient(model_size="medium")
         print("✅ Whisper client initialized")
         
         print("🎉 Arovia Health Desk API ready!")
@@ -164,7 +164,7 @@ async def analyze_symptoms_voice(
             
             # Analyze symptoms
             if voice_result.transcribed_text.strip():
-                triage_result = triage_agent.analyze_symptoms_from_text(voice_result.transcribed_text)
+                triage_result, _ = triage_agent.analyze_symptoms_from_text(voice_result.transcribed_text)
             else:
                 raise HTTPException(status_code=400, detail="No speech detected in audio")
             
@@ -182,7 +182,11 @@ async def analyze_symptoms_voice(
             # Clean up temporary file
             os.unlink(temp_file_path)
             
+    except HTTPException:
+        raise
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Error processing voice input: {str(e)}")
 
 @app.post("/facilities", response_model=List[Dict[str, Any]])

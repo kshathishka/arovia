@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { HeartIcon, MicrophoneIcon, DocumentTextIcon, MapPinIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { HeartIcon, MicrophoneIcon, MapPinIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 import { useTranslation } from 'react-i18next';
 
 const Header: React.FC = () => {
@@ -13,8 +13,7 @@ const Header: React.FC = () => {
   };
 
   const navItems = [
-    { name: t('nav.dashboard'), href: '/', icon: HeartIcon },
-    { name: t('nav.triage'), href: '/triage', icon: DocumentTextIcon },
+    { name: t('nav.dashboard'), href: '/app', icon: HeartIcon },
     { name: t('nav.voice'), href: '/voice', icon: MicrophoneIcon },
     { name: t('nav.facilities'), href: '/facilities', icon: MapPinIcon },
   ];
@@ -32,7 +31,7 @@ const Header: React.FC = () => {
               <h1 className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                 {t('title')}
               </h1>
-              <p className="text-xs text-gray-500 font-medium tracking-wide">HEALTH DESK</p>
+              <p className="text-xs text-gray-500 font-medium tracking-wide">HEALTH DESK AGENT</p>
             </div>
           </Link>
 
