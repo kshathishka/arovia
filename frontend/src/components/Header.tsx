@@ -2,9 +2,15 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { HeartIcon, MicrophoneIcon, MapPinIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
+import { Ambulance } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isEmergency?: boolean;
+  urgencyScore?: number;
+}
+
+const Header: React.FC<HeaderProps> = ({ isEmergency = false, urgencyScore = 0 }) => {
   const location = useLocation();
   const { t, i18n } = useTranslation();
 
@@ -55,6 +61,25 @@ const Header: React.FC = () => {
                 );
               })}
             </nav>
+
+            {/* Emergency Ambulance Button */}
+            <a
+              href="tel:108"
+              className={`relative flex items-center space-x-2 px-4 py-2 rounded-xl font-semibold text-sm transition-all duration-300 ${isEmergency
+                ? 'bg-red-600 text-white shadow-lg animate-pulse hover:bg-red-700'
+                : 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100'
+                }`}
+              title="Emergency Ambulance - Dial 108"
+            >
+              {isEmergency && (
+                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                </span>
+              )}
+              <Ambulance className={`w-5 h-5 ${isEmergency ? 'animate-bounce' : ''}`} />
+              <span className="hidden sm:inline">108</span>
+            </a>
 
             {/* Language Switcher */}
             <div className="relative flex items-center space-x-2 pl-6 border-l border-gray-100">

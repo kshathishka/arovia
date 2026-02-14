@@ -98,11 +98,19 @@ function App() {
     }
   };
 
+  // Compute emergency state based on triage results
+  const isEmergency = triageResult
+    ? (triageResult.urgency_score >= 9 || triageResult.emergency_detected)
+    : false;
+
   return (
     <Router>
       <div className="min-h-screen bg-gray-50 pb-16">
         <Disclaimer />
-        <Header />
+        <Header
+          isEmergency={isEmergency}
+          urgencyScore={triageResult?.urgency_score}
+        />
 
         <Routes>
           {/* Landing Page - Full Width */}
