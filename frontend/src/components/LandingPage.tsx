@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Activity, ShieldCheck, Globe, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -78,10 +78,10 @@ const LandingPage = () => {
                 <div className="container mx-auto px-4">
                     <div className="text-center max-w-3xl mx-auto mb-16">
                         <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
-                            Healthcare Intelligence at Scale
+                            {t('landing.featuresTitle')}
                         </h2>
                         <p className="mt-4 text-lg text-gray-600">
-                            Arovia combines clinical protocols with advanced AI to bridge the gap between patients and care.
+                            {t('landing.featuresSubtitle')}
                         </p>
                     </div>
 
@@ -91,9 +91,9 @@ const LandingPage = () => {
                             <div className="h-12 w-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
                                 <Activity className="h-6 w-6" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-3">Symptom Triage</h3>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">{t('landing.feature1Title')}</h3>
                             <p className="text-gray-600">
-                                Advanced NLP analyzes symptoms to assess urgency (1-10 scale) and identify potential conditions instantly.
+                                {t('landing.feature1Desc')}
                             </p>
                         </div>
 
@@ -102,9 +102,9 @@ const LandingPage = () => {
                             <div className="h-12 w-12 bg-red-100 rounded-xl flex items-center justify-center text-red-600 mb-6">
                                 <ShieldCheck className="h-6 w-6" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-3">Red Flag Detection</h3>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">{t('landing.feature2Title')}</h3>
                             <p className="text-gray-600">
-                                Real-time identification of life-threatening emergencies (Cardiac, Stroke, Trauma) for immediate escalation.
+                                {t('landing.feature2Desc')}
                             </p>
                         </div>
 
@@ -113,9 +113,9 @@ const LandingPage = () => {
                             <div className="h-12 w-12 bg-teal-100 rounded-xl flex items-center justify-center text-teal-600 mb-6">
                                 <Globe className="h-6 w-6" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-3">Multilingual Voice</h3>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">{t('landing.feature3Title')}</h3>
                             <p className="text-gray-600">
-                                Speak naturally in Hindi, English, or regional languages. Powered by Whisper for high-accuracy transcription.
+                                {t('landing.feature3Desc')}
                             </p>
                         </div>
                         {/* Feature 4 */}
@@ -123,9 +123,9 @@ const LandingPage = () => {
                             <div className="p-2 mb-4">
                                 <span className="text-4xl">📍</span>
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-3">Smart Matching</h3>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">{t('landing.feature4Title')}</h3>
                             <p className="text-gray-600">
-                                Geolocation-based search connects patients to the nearest appropriate facilities (Govt, NGO, Private).
+                                {t('landing.feature4Desc')}
                             </p>
                         </div>
                         {/* Feature 5 */}
@@ -133,20 +133,20 @@ const LandingPage = () => {
                             <div className="p-2 mb-4">
                                 <span className="text-4xl">📄</span>
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 mb-3">Referral Notes</h3>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">{t('landing.feature5Title')}</h3>
                             <p className="text-gray-600">
-                                Generates structured medical summaries for seamless handoffs to doctors, reducing administrative burden.
+                                {t('landing.feature5Desc')}
                             </p>
                         </div>
                         {/* Feature 6 */}
                         <div className="bg-gradient-to-br from-blue-600 to-teal-600 rounded-2xl p-8 shadow-lg text-white flex flex-col justify-center items-center text-center">
-                            <h3 className="text-2xl font-bold mb-4">Ready to try?</h3>
-                            <p className="mb-6 opacity-90">Experience the future of triage today.</p>
+                            <h3 className="text-2xl font-bold mb-4">{t('landing.feature6Title')}</h3>
+                            <p className="mb-6 opacity-90">{t('landing.feature6Subtitle')}</p>
                             <button
                                 onClick={() => navigate('/app')}
                                 className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-blue-600 bg-white hover:bg-gray-50 transition-colors"
                             >
-                                Launch Dashboard <ChevronRight className="ml-2 h-5 w-5" />
+                                {t('landing.feature6Button')} <ChevronRight className="ml-2 h-5 w-5" />
                             </button>
                         </div>
                     </div>
@@ -162,18 +162,18 @@ const LandingPage = () => {
                                 <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
                                     <span className="text-white text-lg">A</span>
                                 </div>
-                                <span>Arovia</span>
+                                <span>{t('landing.footerTitle')}</span>
                             </div>
-                            <p className="text-gray-400 mt-2 text-sm">AI-Powered Health Triage Agent</p>
+                            <p className="text-gray-400 mt-2 text-sm">{t('landing.footerSubtitle')}</p>
                         </div>
                         <div className="flex space-x-8 text-gray-400">
-                            <span className="hover:text-white cursor-pointer">Privacy</span>
-                            <span className="hover:text-white cursor-pointer">Terms</span>
-                            <span className="hover:text-white cursor-pointer">Contact</span>
+                            <span className="hover:text-white cursor-pointer">{t('landing.footerPrivacy')}</span>
+                            <span className="hover:text-white cursor-pointer">{t('landing.footerTerms')}</span>
+                            <span className="hover:text-white cursor-pointer">{t('landing.footerContact')}</span>
                         </div>
                     </div>
                     <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
-                        &copy; {new Date().getFullYear()} Arovia Health. All rights reserved.
+                        &copy; {new Date().getFullYear()} {t('landing.footerCopyright')}
                     </div>
                 </div>
             </footer>

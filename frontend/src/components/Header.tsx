@@ -10,7 +10,7 @@ interface HeaderProps {
   urgencyScore?: number;
 }
 
-const Header: React.FC<HeaderProps> = ({ isEmergency = false, urgencyScore = 0 }) => {
+const Header: React.FC<HeaderProps> = ({ isEmergency = false }) => {
   const location = useLocation();
   const { t, i18n } = useTranslation();
 
