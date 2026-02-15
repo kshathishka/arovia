@@ -3,114 +3,81 @@
 All notable changes to the **Arovia – AI Health Desk Agent** project are documented in this file.
 
 This project follows:
-- **Keep a Changelog** formatting
-- **Semantic Versioning (SemVer)**
+- [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+- [Semantic Versioning](https://semver.org/)
 
 ---
 
-## [Unreleased] - 2026-02-14
+## [Unreleased]
 
-### 🧠 Improvements
-- Enhanced facility matching responsiveness
-- Expanded medical prompt templates and follow-up logic
-- Refined urgency scoring thresholds based on clinical edge cases
-- Better fallback and error handling in voice transcription
-
-### 🛠 Fixes
-- Addressed rare API crash with invalid geolocation coordinates
-- Corrected TypeScript type mismatch in TriageForm component
-- Fixed intermittent UI re-rendering glitch on language switch
-
----
-
-## [1.1.0] - 2026-01-28
-
-### 🚀 Added
-- 📊 **Frontend Dashboard Enhancements**
-  - New Status and System Health monitor
-  - Improved facility results UI with dynamic ranking
-
-- 🩺 **Medical Logic Upgrades**
-  - Dynamic emergency follow-up question flow
-  - Additional red-flag keyword categories (respiratory/neurological)
-
-- 🧪 **Testing Enhancements**
-  - Golden dataset expanded with new edge cases
-  - New test suite for high-load API behavior
-
-### 🔄 Changed
-- Refactored TriageAgent logic to separate emergency detection module
-- Simplified Pydantic models for easier extensibility
-
-### 🐛 Fixed
-- Resolved intermittent hanging in `/triage/voice` endpoint when user audio is silent
-- Fixed mis-aligned facilities list on mobile device layouts
+### 🚀 Planned
+- Additional clinical validation improvements
+- Enhanced emergency detection logic
+- UI/UX refinements
+- Performance optimization for facility matching
 
 ---
 
 ## [1.0.0] - 2025-10-26
 
-### 🚀 Initial Public Release
+### 🚀 Added
 
-**Frontend:**
-- Complete React + TypeScript app  
-- Tailwind CSS UI components  
-- Multilingual support, including voice input
+- Full AI-powered medical triage system
+- Urgency scoring (1–10 scale)
+- Emergency red flag detection
+- Multilingual voice support (22 Indian languages)
+- Whisper Large V3 integration
+- Groq Cloud Llama 3.3 70B integration
+- Smart facility matching using OpenStreetMap
+- Structured referral note generation
+- FastAPI REST API endpoints
+- React + TypeScript frontend
+- Tailwind CSS UI components
+- GitHub Actions CI workflow
+- API documentation
+- UML sequence diagram
+- Project workflow documentation
 
-**Backend (FastAPI):**
-- REST API triage endpoints (`/triage/text`, `/triage/voice`, `/facilities`)
-- Swagger/OpenAPI documentation
-- Voice processing pipeline with Whisper Large V3
-- CORS middleware for frontend support
-- Health check + model metadata endpoints
+### 🔄 Changed
 
-**AI & ML Integration:**
-- Groq Cloud with Llama 3.3 70B for medical reasoning
-- Pydantic data models for structured medical results
-- 22 Indian languages supported for voice input
+- Improved error handling for voice processing
+- Refactored backend triage logic for modularity
+- Improved Pydantic data model validation
 
-**Core Features:**
-- Symptom triage and urgency scoring
-- Real-time facility matching (OpenStreetMap)
-- Structured referral generation
-- Comprehensive error validation and fallback logic
+### 🐛 Fixed
 
-**Testing & Infrastructure:**
-- Backend testing framework
-- Voice demo script
-- Environment configuration scripts
+- Resolved facility matching data inconsistencies
+- Fixed geolocation permission handling
+- Corrected type annotation issues
+- Fixed minor frontend rendering bugs
 
 ---
 
 ## [0.1.0] - 2025-10-25
 
-### 🎉 MVP Launch
+### 🎉 MVP Release
 
-- Basic AI core with Llama 3.3 70B  
-- Whisper 22-language voice input  
-- Streamlit interface for text + voice triage  
-- Emergency detection and red flag alerts
-- Facility matching prototype with mock dataset
-- PDF report generation for triage outputs
+- Initial AI triage implementation
+- Basic Streamlit interface
+- Voice demo script
+- Core symptom analysis
+- Initial facility matching prototype
+- Test suite implementation
 
 ---
 
 ## [Initial Release] - 2025-10-24
 
-### 📦 Project Foundation
+### 📦 Project Setup
 
-- Repository and project structure setup
-- README, documentation, and implementation guidelines
-- Preliminary triage logic and prototype
-
----
-
-## 📌 Versioning
-
-This project uses **Semantic Versioning**:
-
-- **MAJOR** version: Breaking API changes
-- **MINOR** version: New backward-compatible features
-- **PATCH** version: Backward-compatible bug fixes
+- Repository structure initialization
+- README and documentation
+- Basic triage logic prototype
 
 ---
+
+## 📌 Versioning Guide
+
+- **MAJOR** version → Breaking API changes
+- **MINOR** version → New backward-compatible features
+- **PATCH** version → Bug fixes
