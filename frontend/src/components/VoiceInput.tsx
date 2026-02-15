@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MicrophoneIcon, StopIcon, PlayIcon } from '@heroicons/react/24/outline';
+import { useTranslation } from 'react-i18next';
 
 interface VoiceInputProps {
   onSubmit: (audioBlob: Blob, language: string) => void;
@@ -9,6 +10,7 @@ interface VoiceInputProps {
 }
 
 const VoiceInput: React.FC<VoiceInputProps> = ({ onSubmit, loading, error }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isRecording, setIsRecording] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
@@ -105,8 +107,8 @@ const VoiceInput: React.FC<VoiceInputProps> = ({ onSubmit, loading, error }) => 
             <MicrophoneIcon className="w-6 h-6 text-green-600" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Voice Input</h1>
-            <p className="text-gray-600">Speak your symptoms in your preferred language</p>
+            <h1 className="text-2xl font-bold text-gray-900">{t('voiceInput.heading')}</h1>
+            <p className="text-gray-600">{t('voiceInput.subheading')}</p>
           </div>
         </div>
 
@@ -114,7 +116,7 @@ const VoiceInput: React.FC<VoiceInputProps> = ({ onSubmit, loading, error }) => 
           {/* Language Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Select Language
+              {t('voiceInput.selectLanguage')}
             </label>
             <select
               value={selectedLanguage}
@@ -156,7 +158,7 @@ const VoiceInput: React.FC<VoiceInputProps> = ({ onSubmit, loading, error }) => 
                 <div className="text-2xl font-mono text-red-600">
                   {formatTime(recordingTime)}
                 </div>
-                <p className="text-sm text-gray-600">Recording... Click stop when finished</p>
+                <p className="text-sm text-gray-600">{t('voiceInput.recordingStop')}</p>
               </div>
             )}
 
@@ -164,7 +166,7 @@ const VoiceInput: React.FC<VoiceInputProps> = ({ onSubmit, loading, error }) => 
               <div className="mb-4">
                 <div className="flex items-center justify-center space-x-2 text-green-600">
                   <PlayIcon className="w-5 h-5" />
-                  <span>Recording completed ({formatTime(recordingTime)})</span>
+                  <span>{t('voiceInput.recordingComplete')} ({formatTime(recordingTime)})</span>
                 </div>
               </div>
             )}
@@ -172,13 +174,13 @@ const VoiceInput: React.FC<VoiceInputProps> = ({ onSubmit, loading, error }) => 
 
           {/* Instructions */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <h3 className="font-medium text-blue-900 mb-2">Recording Tips:</h3>
+            <h3 className="font-medium text-blue-900 mb-2">{t('voiceInput.tipsTitle')}</h3>
             <ul className="text-sm text-blue-800 space-y-1">
-              <li>• Speak clearly and at a normal pace</li>
-              <li>• Describe your symptoms in detail</li>
-              <li>• Include when symptoms started</li>
-              <li>• Mention severity and any associated symptoms</li>
-              <li>• Recording will automatically stop after 30 seconds</li>
+              <li>{t('voiceInput.tip1')}</li>
+              <li>{t('voiceInput.tip2')}</li>
+              <li>{t('voiceInput.tip3')}</li>
+              <li>{t('voiceInput.tip4')}</li>
+              <li>{t('voiceInput.tip5')}</li>
             </ul>
           </div>
 
@@ -194,7 +196,7 @@ const VoiceInput: React.FC<VoiceInputProps> = ({ onSubmit, loading, error }) => 
               onClick={() => navigate('/')}
               className="btn-secondary flex-1"
             >
-              Back to Dashboard
+              {t('voiceInput.backButton')}
             </button>
             <button
               onClick={handleSubmit}
@@ -204,10 +206,10 @@ const VoiceInput: React.FC<VoiceInputProps> = ({ onSubmit, loading, error }) => 
               {loading ? (
                 <div className="flex items-center justify-center">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Processing...
+                  {t('voiceInput.processingButton')}
                 </div>
               ) : (
-                'Analyze Recording'
+                t('voiceInput.submitButton')
               )}
             </button>
           </div>

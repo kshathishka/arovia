@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Activity, ShieldCheck, Globe, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const LandingPage = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     return (
@@ -13,30 +15,29 @@ const LandingPage = () => {
                     <div className="max-w-4xl mx-auto text-center">
                         <div className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 mb-8 animate-fade-in-up">
                             <span className="flex h-2 w-2 rounded-full bg-blue-600 mr-2"></span>
-                            Arovia Health Logic v1.0 Live
+                            {t('landing.badge')}
                         </div>
                         <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-gray-900 mb-8 animate-fade-in-up delay-100">
-                            Intelligent Triage for <br />
+                            {t('landing.heroTitle').split(' ').slice(0, 3).join(' ')} <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500">
-                                Every Citizen
+                                {t('landing.heroTitle').split(' ').slice(3).join(' ')}
                             </span>
                         </h1>
                         <p className="mt-4 text-xl text-gray-600 mb-10 max-w-2xl mx-auto animate-fade-in-up delay-200">
-                            Revolutionizing first-point healthcare access in India.
-                            AI-powered assessments, multilingual voice support, and instant facility matching.
+                            {t('landing.heroSubtitle')}
                         </p>
                         <div className="flex flex-col sm:flex-row justify-center gap-4 animate-fade-in-up delay-300">
                             <button
                                 onClick={() => navigate('/app')}
                                 className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-lg font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1"
                             >
-                                Start Assessment <ArrowRight className="ml-2 h-5 w-5" />
+                                {t('landing.startButton')} <ArrowRight className="ml-2 h-5 w-5" />
                             </button>
                             <button
                                 onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
                                 className="inline-flex items-center justify-center px-8 py-4 border border-gray-200 text-lg font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 shadow-sm hover:shadow-md transition-all duration-200"
                             >
-                                Learn More
+                                {t('landing.learnMoreButton')}
                             </button>
                         </div>
                     </div>
@@ -54,9 +55,9 @@ const LandingPage = () => {
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center divide-y md:divide-y-0 md:divide-x divide-gray-100">
                         <div className="p-4">
-                            <div className="text-4xl font-bold text-gray-900 mb-2">1:1,445</div>
-                            <div className="text-sm font-semibold uppercase tracking-wide text-gray-500">Doctor-to-Patient Ratio</div>
-                            <p className="mt-2 text-gray-600">Well below the WHO recommendation of 1:1,000, leading to severe access gaps.</p>
+                            <div className="text-4xl font-bold text-gray-900 mb-2">{t('landing.stat1Value')}</div>
+                            <div className="text-sm font-semibold uppercase tracking-wide text-gray-500">{t('landing.stat1Title')}</div>
+                            <p className="mt-2 text-gray-600">{t('landing.stat1Desc')}</p>
                         </div>
                         <div className="p-4">
                             <div className="text-4xl font-bold text-gray-900 mb-2">2-4 hrs</div>
