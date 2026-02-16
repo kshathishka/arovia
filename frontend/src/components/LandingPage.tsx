@@ -60,14 +60,14 @@ const LandingPage = () => {
                             <p className="mt-2 text-gray-600">{t('landing.stat1Desc')}</p>
                         </div>
                         <div className="p-4">
-                            <div className="text-4xl font-bold text-gray-900 mb-2">2-4 hrs</div>
-                            <div className="text-sm font-semibold uppercase tracking-wide text-gray-500">Average Wait Time</div>
-                            <p className="mt-2 text-gray-600">For basic consultations in public facilities, delaying critical care.</p>
+                            <div className="text-4xl font-bold text-gray-900 mb-2">{t('landing.stat2Value')}</div>
+                            <div className="text-sm font-semibold uppercase tracking-wide text-gray-500">{t('landing.stat2Title')}</div>
+                            <p className="mt-2 text-gray-600">{t('landing.stat2Desc')}</p>
                         </div>
                         <div className="p-4">
-                            <div className="text-4xl font-bold text-gray-900 mb-2">10 min</div>
-                            <div className="text-sm font-semibold uppercase tracking-wide text-gray-500">Door-to-Triage</div>
-                            <p className="mt-2 text-gray-600">Manual processes slow down identification of emergency cases.</p>
+                            <div className="text-4xl font-bold text-gray-900 mb-2">{t('landing.stat3Value')}</div>
+                            <div className="text-sm font-semibold uppercase tracking-wide text-gray-500">{t('landing.stat3Title')}</div>
+                            <p className="mt-2 text-gray-600">{t('landing.stat3Desc')}</p>
                         </div>
                     </div>
                 </div>
